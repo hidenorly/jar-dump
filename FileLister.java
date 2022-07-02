@@ -32,7 +32,7 @@ import java.util.List;
 
 
 public class FileLister implements FileVisitor<Path> {
-  protected List<String> mFiles = new ArrayList<String>();
+  protected List<Path> mFiles = new ArrayList<Path>();
   protected String mFilterRegexp;
 
   protected FileLister(String filterRegexp){
@@ -49,7 +49,7 @@ public class FileLister implements FileVisitor<Path> {
   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
     String _path = file.toString();
     if( mFilterRegexp.isEmpty() || _path.matches(mFilterRegexp) ){
-      mFiles.add( _path );
+      mFiles.add( file );
     }
     return FileVisitResult.CONTINUE;
   }
@@ -64,11 +64,11 @@ public class FileLister implements FileVisitor<Path> {
     return FileVisitResult.CONTINUE;
   }
 
-  protected List<String> getFiles(){
+  protected List<Path> getFiles(){
     return mFiles;
   }
 
-  public static List<String> getFileList(String path, String filterRegexp){
+  public static List<Path> getFileList(String path, String filterRegexp){
     Path root = null;
     try{
       if( path.endsWith(".zip") || path.endsWith(".jar") || path.endsWith(".apk") ){
@@ -95,7 +95,7 @@ public class FileLister implements FileVisitor<Path> {
   }
 
 
-  public static List<String> getFileList(String path){
+  public static List<Path> getFileList(String path){
     return getFileList( path, "" );
   }
 }
